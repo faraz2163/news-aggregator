@@ -4,7 +4,7 @@ import "./App.scss";
 import Header from "./partials/Header";
 import Home from "./pages/Home";
 import Footer from "./partials/Footer";
-import services from "./helper/services";
+import services from "./services/services";
 
 function App() {
   // console.log(services.NewsAPI.getSources());

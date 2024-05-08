@@ -15,6 +15,12 @@ class NewsAPIService {
     return newsFeed;
   }
 
+  async getEditorsPick(section) {
+    const editorsPick = await this.client(`/top-headlines?sources=${section}`);
+
+    return editorsPick;
+  }
+
   async getSources() {
     const sources = await this.client("/top-headlines/sources");
     return sources;

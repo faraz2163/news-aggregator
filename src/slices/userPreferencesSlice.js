@@ -10,7 +10,6 @@ const sources = getItemLocal(SourceFieldName);
 const categories = getItemLocal(CategoryFieldName);
 const countries = getItemLocal(CountryFieldName);
 
-// News slice
 const userPreferencesSlice = createSlice({
   name: "userPreferences",
   initialState: {

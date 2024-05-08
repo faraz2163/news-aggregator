@@ -2,26 +2,27 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import React, { useEffect, useState } from "react";
 import { timeSince } from "../utils";
 
-const Slider = ({ articles, title = "Slider" }) => {
+const Slider = ({ articles, title = "Editor's Pick" }) => {
   const [index, setIndex] = useState(0);
   const [currentSelected, setCurrentSelected] = useState(articles[index]);
+
   useEffect(() => {
     setCurrentSelected(articles[index]);
   }, [index, articles]);
 
-  return (
+  return articles?.length ? (
     <div className="w-full">
-      <h1 className="text-3xl">Editor's Pick</h1>
+      <h1 className="text-3xl">{title}</h1>
       <div className="slider flex justify-center items-center">
         <div className="text-side absolute left-0 w-[45%] z-50">
           <div className="p-8 bg-white bg-opacity-30 backdrop-blur-xl rounded-[30px] flex flex-col gap-4 min-h-[150px]">
             <h4 className="text-xl text-indigo-600">
-              {currentSelected.source}
+              {currentSelected.source.name}
             </h4>
             <h3 className="text-xl font-semibold">{currentSelected.title}</h3>
             <p className="text-slate-900 text-opacity-70">
-              <span>{timeSince(currentSelected.pub_date)} ago</span> | By{" "}
-              <span>{currentSelected.author}</span>
+              <span>{timeSince(new Date(currentSelected.pub_date))} ago</span> |
+              By <span>{currentSelected.author}</span>
             </p>
           </div>
         </div>
@@ -54,6 +55,8 @@ const Slider = ({ articles, title = "Slider" }) => {
         </div>
       </div>
     </div>
+  ) : (
+    ""
   );
 };
 

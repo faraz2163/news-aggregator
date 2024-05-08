@@ -1,7 +1,6 @@
-import { PlusIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import { PlusIcon } from "@heroicons/react/16/solid";
 import React, { useEffect, useRef, useState } from "react";
 import Item from "./Item";
-import { getItemLocal, setItemLocal } from "../../utils";
 import { useDispatch } from "react-redux";
 
 const SelectBox = ({
@@ -12,8 +11,6 @@ const SelectBox = ({
   selected,
   dispatchFunction,
 }) => {
-  console.log(selected, selectionFor);
-
   const DefaultText = "Select " + selectionFor;
   const selectComponent = useRef(null);
   const Dispatch = useDispatch();

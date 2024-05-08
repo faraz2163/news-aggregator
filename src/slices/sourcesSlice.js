@@ -1,27 +1,31 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import services from "../helper/services";
+import services from "../services/services";
+import { fetchEditorsPick } from "./editorsPickSlice";
 
 const { NewsAPI } = services;
 
 // Async thunk to fetch data from APIs
-export const fetchSources = createAsyncThunk("news/sources", async () => {
-  try {
-    const response = await NewsAPI.getSources();
-    const data = response.data;
-    if (data.status === "ok") {
-      const sources = data.sources.map((s) => {
-        return { id: s.id, name: s.name };
-      });
-      return sources;
+export const fetchSources = createAsyncThunk(
+  "news/sources",
+  async (_, { dispatch }) => {
+    try {
+      const response = await NewsAPI.getSources();
+      const data = response.data;
+      if (data.status === "ok") {
+        const sources = data.sources.map((s) => {
+          return { id: s.id, name: s.name };
+        });
+        dispatch(fetchEditorsPick(sources));
+        return sources;
+      }
+      return null;
+    } catch (error) {
+      throw new Error("Failed to fetch news data");
     }
-    return null;
-  } catch (error) {
-    throw new Error("Failed to fetch news data");
   }
-});
+);
 
-// News slice
 const sourceSlice = createSlice({
   name: "sources",
   initialState: {
