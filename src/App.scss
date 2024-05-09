@@ -111,3 +111,49 @@ body {
 ::-webkit-scrollbar-track {
   background-color: transparent; /* Color of the scrollbar track */
 }
+
+@media (max-width: 767px) {
+  body {
+    &::after {
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 90%;
+      scale: 2;
+      opacity: 0.4;
+      animation: move-pink-mob 10s ease-in-out infinite alternate;
+    }
+    &::before {
+      bottom: -50%;
+      left: -50%;
+      width: 100%;
+      height: 90%;
+      scale: 2;
+      opacity: 0.4;
+      animation: move-pink-mob 10s ease-in-out infinite alternate;
+    }
+  }
+}
+
+@keyframes move-pink-mob {
+  0% {
+    scale: 1.5;
+    opacity: 0.4;
+  }
+  100% {
+    scale: 1;
+    opacity: 0.6;
+    filter: blur(70vw);
+  }
+}
+@keyframes move-blue-mob {
+  0% {
+  }
+  100% {
+    transform: translate(0, -200px);
+    /* left: 2%; */
+    transform: scale(0.8);
+    filter: blur(10vw);
+    left: 60%;
+  }
+}

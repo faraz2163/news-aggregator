@@ -70,7 +70,7 @@ const SelectBox = ({
         />
       </div>
       <div
-        className={`w-full translate-y-2 rounded-2xl overflow-hidden absolute top-full pr-4 pt-4 pb-9 backdrop-blur-md bg-white bg-opacity-45  ${
+        className={`w-full translate-y-2 rounded-2xl overflow-hidden absolute top-full pr-4 pt-4 pb-9 backdrop-blur-md bg-white md:bg-opacity-45 ${
           isOpen ? "pointer-events-auto" : "pointer-events-none hidden"
         }`}
       >

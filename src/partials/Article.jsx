@@ -1,30 +1,57 @@
 import React from "react";
+import Skeleton from "react-loading-skeleton";
+import { timeSince } from "../utils";
 
-const Article = ({ article, showImage = true }) => {
-  return (
+const Article = ({ article, loading, showImage = true }) => {
+  return article === undefined && loading !== true ? (
+    "Please provide article to render"
+  ) : (
     <div className="rounded-2xl overflow-hidden">
-      <a href="/">
+      <a href={article?.url} target="_blank">
         {showImage && (
-          <img
-            src="https://s3-alpha-sig.figma.com/img/3bfd/3adf/2c3c2343ee7adaa3304072a73c38a577?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=UEvCYGL-KdiPi~sbC~gQcbt9qrqvmwFl8ofjM1JAQnQifBCKfY8FIgT2VuFlDUGTJS-ZOeXSoxigl8t15uZKlgHVe5orKsWmTxyaj8q397mYFpMTchT2dr~LwnQMqYqnwndWwGVIrzTCfWBIDK5u2gJXmEKMH1SAp8LmTiZkgSMEJNTPTZGoJO-Ycuy9Sds~rJhRv4YtJ~FRD~7khl4h4eFnY2auP7CIb-a3355wGnaNiU2OurgegTBCTw~yRLYLkGpvNdeBuhGsr3LPnUSSekitF7vkyQl0SWiMeRtXoFqCQIUKfS3p-nbGlIOxG9NoEdjBkz-C6wplkquUd-SqIg__"
-            alt=""
-            className="object-cover object-center h-96 w-full rounded-2xl"
-          />
+          <div>
+            {loading ? (
+              <Skeleton borderRadius="1rem" height="384px" />
+            ) : (
+              <img
+                src={article?.img}
+                alt=""
+                className="object-cover object-center h-52 sm:h-64 w-full rounded-2xl lg:h-96"
+              />
+            )}
+          </div>
         )}
-        <div className="p-4 flex flex-col gap-2">
-          <h4 className="text-xl text-indigo-600">The New York Times</h4>
+
+        <div className="px-2 py-4 md:p-4 flex flex-col gap-2">
+          <h4 className="text-xl text-indigo-600">
+            {loading ? (
+              <Skeleton height={28} width={200} />
+            ) : (
+              article?.source?.name
+            )}
+          </h4>
           <h3 className="text-xl font-semibold">
-            Google Employees Tune Out Antitrust Threat as Trial Comes to a Head
+            {loading ? <Skeleton height={28} /> : article?.title}
           </h3>
-          <p>
-            They shrugged off concerns about the company’s fate ahead of closing
-            arguments in the Justice Department’s lawsuit this week.
-          </p>
-          <p className="text-gray-400">
-            <span>2d ago</span> | By <span>John Doe</span>
+          <p>{loading ? <Skeleton height={24} /> : article?.content}</p>
+          <p className="text-gray-400 flex gap-2 items-center">
+            {loading ? (
+              <Skeleton width={150} />
+            ) : (
+              <span>{timeSince(article?.pub_date)} ago</span>
+            )}
+            {" | "}
+            {loading ? (
+              <Skeleton width={250} />
+            ) : (
+              <>
+                By <span>{article?.author}</span>
+              </>
+            )}
           </p>
         </div>
       </a>
+      <hr className="mx-2 mb-4" />
     </div>
   );
 };

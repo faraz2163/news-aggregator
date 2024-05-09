@@ -1,4 +1,5 @@
-export const timeSince = (date) => {
+export const timeSince = (d) => {
+  const date = new Date(d);
   var seconds = Math.floor((new Date() - date) / 1000);
 
   var interval = seconds / 31536000;
@@ -48,6 +49,13 @@ export const getItemLocal = (key) => {
 
 export const generateTimestampId = () => Date.now().toString();
 
+export const getAuthorName = (authorName, seperator = "") => {
+  if (authorName) {
+    return <span>{seperator + authorName}</span>;
+  }
+  return "";
+};
+
 export const normalizeNewsData = (arr) =>
   arr.map((a) => {
     return {
@@ -55,7 +63,7 @@ export const normalizeNewsData = (arr) =>
       title: a.title,
       content: a.content,
       source: a.source,
-      img: a.urlToImage,
+      img: a.urlToImage ? a.urlToImage : undefined,
       author: a.author,
       url: a.url,
       pub_date: a.publishedAt,
@@ -67,25 +75,48 @@ export const normalizeGuardianData = (arr) =>
     return {
       id: generateTimestampId(),
       title: a.webTitle,
-      content: a.fields.trailText,
+      content: a.fields?.trailText,
       source: { id: a.sectionId, name: a.sectionName },
-      img: a.elements.find((e) => e.relation === "thumbnail").assets[0].file,
-      contributor: a.tags[0].webTitle,
+      img: a.elements?.find((e) => e.relation === "thumbnail")?.assets[0]?.file,
+      author: a.tags[0]?.webTitle,
       url: a.webUrl,
       pub_date: a.webPublicationDate,
     };
   });
 
-export const normalizeNYTimesData = (arr) =>
+export const normalizeNYTimesEditorsData = (arr) =>
   arr.map((a) => {
     return {
       id: generateTimestampId(),
       title: a.title,
       content: a.abstract,
-      source: { id: a.section, name: a.section },
-      img: a.multimedia.find((e) => e.format === "threeByTwoSmallAt2X").url,
+      source: { id: a.section_name, name: a.section_name },
+      img: a.multimedia?.find((e) => e.format === "threeByTwoSmallAt2X")?.url,
       author: a.byline.substr(3),
       url: a.url,
       pub_date: a.updated_date,
     };
   });
+
+export const normalizeNYTimesSearchData = (arr) =>
+  arr.map((a) => {
+    let imgurl = a.multimedia?.find(
+      (e) => e.subtype === "threeByTwoSmallAt2X"
+    )?.url;
+    if (!imgurl) {
+      imgurl = "";
+    }
+    return {
+      id: generateTimestampId(),
+      title: a.headline.main,
+      content: a.abstract,
+      source: { id: a.section_name, name: a.section_name },
+      img: imgurl === "" ? undefined : "https://www.nytimes.com/" + imgurl,
+      author: a.byline?.original?.substr(3),
+      url: a.web_url,
+      pub_date: a.pub_date,
+    };
+  });
+
+export const getLuceneSyntax = (key, arr) =>
+  arr.length ? `${key}: (${arr.map((item) => `"${item}"`).join(", ")})` : null;

@@ -10,8 +10,17 @@ class NewsAPIService {
     });
   }
 
-  async getNewsFeed(country = "us") {
-    const newsFeed = await this.client(`/top-headlines?country=${country}`);
+  async getNewsFeed(sources) {
+    const params = new URLSearchParams();
+
+    if (sources.length) {
+      params.append("sources", sources.map((s) => s.id).join(","));
+    }
+    debugger;
+
+    const newsFeed = await this.client(
+      `/top-headlines${params.toString() !== "" ? "?" : ""}${params.toString()}`
+    );
     return newsFeed;
   }
 

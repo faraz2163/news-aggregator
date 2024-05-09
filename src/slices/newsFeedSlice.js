@@ -2,33 +2,55 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import services from "../services/services";
 import {
   normalizeGuardianData,
-  normalizeNYTimesEditorsData,
+  normalizeNYTimesSearchData,
   normalizeNewsData,
 } from "../utils";
 
 const { NewsAPI, GuardianAPI, NYTIMESAPI } = services;
 
-export const fetchEditorsPick = createAsyncThunk(
-  "news/fetchEditorsPick",
-  async (sourcesState) => {
+export const fetchNewsFeed = createAsyncThunk(
+  "news/fetchNewsFeed",
+  async (_, { getState }) => {
     try {
-      const sources = sourcesState
-        .filter((s) => s.id.indexOf("google") === -1)
-        .map((s) => s.id)
-        .slice(0, 5);
-      const newsAPIResponse = await NewsAPI.getEditorsPick(sources.join(","));
-      const newsAPIData = newsAPIResponse.data.articles;
+      let newsAPIData = [];
+      let guardianAPIData = [];
+      let NYTimesAPIData = [];
 
-      const guardianAPIResponse = await GuardianAPI.getEditorsPick();
-      const guardianAPIData = await guardianAPIResponse.data.response.results;
+      // ...normalizeNewsData(newsAPIData),
+      //   ...normalizeGuardianData(guardianAPIData),
+      //   ...normalizeNYTimesSearchData(NYTimesAPIData),
+      const {
+        userPreferences: { user_sources, user_categories, user_countries },
+      } = getState();
 
-      const NYTimesAPIResponse = await NYTIMESAPI.getEditorsPick();
-      const NYTimesAPIData = await NYTimesAPIResponse.data.results;
+      if (user_sources.length !== 0) {
+        const newsAPIResponse = await NewsAPI.getNewsFeed(user_sources);
+        newsAPIData = normalizeNewsData(newsAPIResponse.data.articles);
+      }
+
+      // if (user_categories.length && user_countries.length) {
+      const guardianAPIResponse = await GuardianAPI.getNewsFeed(
+        user_countries,
+        user_categories
+      );
+      guardianAPIData = normalizeGuardianData(
+        guardianAPIResponse.data.response.results
+      );
+
+      const NYTimesAPIResponse = await NYTIMESAPI.getNewsFeed(
+        user_sources,
+        user_categories,
+        user_countries
+      );
+      NYTimesAPIData = normalizeNYTimesSearchData(
+        NYTimesAPIResponse.data.response.docs
+      );
+      // }
 
       const combinedData = [
-        ...normalizeNewsData(newsAPIData),
-        ...normalizeGuardianData(guardianAPIData),
-        ...normalizeNYTimesEditorsData(NYTimesAPIData),
+        ...newsAPIData,
+        ...guardianAPIData,
+        ...NYTimesAPIData,
       ];
 
       // const combinedData = [
@@ -881,31 +903,31 @@ export const fetchEditorsPick = createAsyncThunk(
   }
 );
 
-const editorsPickSlice = createSlice({
-  name: "editorsPick",
+const newsFeedSlice = createSlice({
+  name: "newsFeed",
   initialState: {
     articles: [],
-    loading: false,
+    loading: true,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchEditorsPick.pending, (state) => {
+      .addCase(fetchNewsFeed.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEditorsPick.fulfilled, (state, action) => {
+      .addCase(fetchNewsFeed.fulfilled, (state, action) => {
         state.loading = false;
         state.articles = action.payload;
       })
-      .addCase(fetchEditorsPick.rejected, (state, action) => {
+      .addCase(fetchNewsFeed.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
   },
 });
 
-export const selectEditorsPick = (state) => state.editorsPick;
+export const selectNewsFeed = (state) => state.newsFeed;
 
-export default editorsPickSlice.reducer;
+export default newsFeedSlice.reducer;

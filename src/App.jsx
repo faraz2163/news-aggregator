@@ -4,19 +4,20 @@ import "./App.scss";
 import Header from "./partials/Header";
 import Home from "./pages/Home";
 import Footer from "./partials/Footer";
-import services from "./services/services";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 function App() {
-  // console.log(services.NewsAPI.getSources());
   return (
     <div>
-      <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
-      <Footer />
+      <SkeletonTheme baseColor="#cfcfcf" highlightColor="#dfdfdf">
+        <Header />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </BrowserRouter>
+        <Footer />
+      </SkeletonTheme>
     </div>
   );
 }
