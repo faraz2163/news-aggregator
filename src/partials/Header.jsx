@@ -1,6 +1,17 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
+import DetailedSearch from "./Search/DetailedSearch";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUserPreferences,
+  updateSearchWord,
+} from "../slices/userPreferencesSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const { user_search } = useSelector(selectUserPreferences);
+  const handleSearchKeyPress = (e) => {
+    dispatch(updateSearchWord(e.target.value));
+  };
   return (
     <header>
       <nav
@@ -14,11 +25,18 @@ const Header = () => {
             </h2>
           </a>
         </div>
-        <div className="lg:flex lg:gap-x-12 w-full lg:w-1/3 relative">
+        <div
+          className={`lg:flex lg:gap-x-12 w-full lg:w-1/3 relative transition-all ease-in-out ${
+            user_search !== "" ? "md:mt-52" : ""
+          }`}
+        >
           <input
             type="text"
             className={`rounded-3xl block w-full border-0 py-2 px-5 pr-10 bg-my-custom-bg bg-opacity-70 backdrop-blur-md outline-none text-sm text-gray-600 shadow-sm placeholder:text-gray-400 placeholder:font-semibold sm:text-sm sm:leading-6`}
             placeholder="Search by Keywords"
+            value={user_search}
+            defaultValue={undefined}
+            onChange={handleSearchKeyPress}
           />
           <MagnifyingGlassIcon
             width={20}
@@ -31,6 +49,9 @@ const Header = () => {
           </a>
         </div>
       </nav>
+      <div className={user_search ? `block` : `hidden`}>
+        <DetailedSearch />
+      </div>
     </header>
   );
 };

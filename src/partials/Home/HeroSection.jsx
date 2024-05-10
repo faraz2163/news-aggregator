@@ -26,7 +26,9 @@ const HeroSection = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchSources());
+    if (sources === null) {
+      dispatch(fetchSources());
+    }
   }, [dispatch]);
 
   const handleCustomizeClick = (e) => {

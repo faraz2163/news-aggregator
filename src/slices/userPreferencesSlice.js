@@ -16,6 +16,12 @@ const userPreferencesSlice = createSlice({
     user_sources: sources ? sources : [],
     user_categories: categories ? categories : [],
     user_countries: countries ? countries : [],
+    user_search: "",
+    user_search_sources: [],
+    user_search_categories: [],
+    user_search_countries: [],
+    user_search_start_date: "",
+    user_search_end_date: "",
   },
   reducers: {
     updateSources(state, action) {
@@ -30,11 +36,38 @@ const userPreferencesSlice = createSlice({
       setItemLocal(CountryFieldName, action.payload);
       state.user_countries = action.payload;
     },
+    updateSearchWord(state, action) {
+      state.user_search = action.payload;
+    },
+    updateSearchSources(state, action) {
+      state.user_search_sources = action.payload;
+    },
+    updateSearchCategories(state, action) {
+      state.user_search_categories = action.payload;
+    },
+    updateSearchCountries(state, action) {
+      state.user_search_countries = action.payload;
+    },
+    updateSearchStartDate(state, action) {
+      state.user_search_start_date = action.payload;
+    },
+    updateSearchEndDate(state, action) {
+      state.user_search_end_date = action.payload;
+    },
   },
 });
 
 export const selectUserPreferences = (state) => state.userPreferences;
-export const { updateSources, updateCategories, updateCountries } =
-  userPreferencesSlice.actions;
+export const {
+  updateSources,
+  updateCategories,
+  updateCountries,
+  updateSearchWord,
+  updateSearchSources,
+  updateSearchCategories,
+  updateSearchCountries,
+  updateSearchStartDate,
+  updateSearchEndDate,
+} = userPreferencesSlice.actions;
 
 export default userPreferencesSlice.reducer;

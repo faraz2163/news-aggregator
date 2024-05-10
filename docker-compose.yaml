@@ -12,7 +12,7 @@ services:
       - ./:/app
       - "/node_modules"
     environment:
-      # - REACT_APP_NEWSAPI_KEY=b40c8c3818934ad5b8b28cf0635eee7f
-      - REACT_APP_NEWSAPI_KEY=da2d0b80dc2a472792d895f0c22ba7cd
+      - REACT_APP_NEWSAPI_KEY=b40c8c3818934ad5b8b28cf0635eee7f
+      # - REACT_APP_NEWSAPI_KEY=da2d0b80dc2a472792d895f0c22ba7cd
       - REACT_APP_GUARDIAN_API_KEY=8f60fae6-4290-4236-a3b2-6577a496e074
       - REACT_APP_NYTIMES_API_KEY=Ws6MAXBYGRf3d8XphNgqoolDiGRGUrwk

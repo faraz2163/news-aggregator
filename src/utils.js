@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require("uuid");
 export const timeSince = (d) => {
   const date = new Date(d);
   var seconds = Math.floor((new Date() - date) / 1000);
@@ -47,7 +48,7 @@ export const getItemLocal = (key) => {
   }
 };
 
-export const generateTimestampId = () => Date.now().toString();
+export const generateTimestampId = () => uuidv4();
 
 export const getAuthorName = (authorName, seperator = "") => {
   if (authorName) {
@@ -120,3 +121,27 @@ export const normalizeNYTimesSearchData = (arr) =>
 
 export const getLuceneSyntax = (key, arr) =>
   arr.length ? `${key}: (${arr.map((item) => `"${item}"`).join(", ")})` : null;
+
+export const isMoreThanMonthAgo = (date) => {
+  var selectedDate = new Date(date);
+  var currentDate = new Date();
+  var oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+
+  if (selectedDate <= oneMonthAgo) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const checkDateRange = (startDate, endDate) => {
+  var start = new Date(startDate);
+  var end = new Date(endDate);
+
+  if (start > end) {
+    return false;
+  } else {
+    return true;
+  }
+};
