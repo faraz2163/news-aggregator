@@ -6,7 +6,7 @@ export const timeSince = (d) => {
   var interval = seconds / 31536000;
 
   if (interval > 1) {
-    return Math.floor(interval) + " years";
+    return Math.floor(interval) + "y";
   }
   interval = seconds / 2592000;
   if (interval > 1) {
@@ -18,13 +18,13 @@ export const timeSince = (d) => {
   }
   interval = seconds / 3600;
   if (interval > 1) {
-    return Math.floor(interval) + " hours";
+    return Math.floor(interval) + " hrs";
   }
   interval = seconds / 60;
   if (interval > 1) {
-    return Math.floor(interval) + " minutes";
+    return Math.floor(interval) + " min";
   }
-  return Math.floor(seconds) + " seconds";
+  return Math.floor(seconds) + " sec";
 };
 // Usage
 // var aDay = 24 * 60 * 60 * 1000;
@@ -122,26 +122,25 @@ export const normalizeNYTimesSearchData = (arr) =>
 export const getLuceneSyntax = (key, arr) =>
   arr.length ? `${key}: (${arr.map((item) => `"${item}"`).join(", ")})` : null;
 
-export const isMoreThanMonthAgo = (date) => {
-  var selectedDate = new Date(date);
-  var currentDate = new Date();
-  var oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-
-  if (selectedDate <= oneMonthAgo) {
-    return true;
-  } else {
-    return false;
-  }
+export const isDateGreaterThanToday = (date) => {
+  const today = new Date();
+  const inputDate = new Date(date);
+  return inputDate <= today;
 };
 
-export const checkDateRange = (startDate, endDate) => {
-  var start = new Date(startDate);
-  var end = new Date(endDate);
+export const isEndDateValid = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  return start <= end;
+};
 
-  if (start > end) {
-    return false;
-  } else {
-    return true;
-  }
+export const isStartDateValid = (date) => {
+  const today = new Date();
+  const inputDate = new Date(date);
+  const oneMonthAgo = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    today.getDate()
+  );
+  return inputDate >= oneMonthAgo;
 };

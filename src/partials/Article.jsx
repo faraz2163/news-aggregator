@@ -1,6 +1,6 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
-import { timeSince } from "../utils";
+import { timeSince, getAuthorName } from "../utils";
 
 const Article = ({ article, loading, showImage = true }) => {
   return article === undefined && loading !== true ? (
@@ -40,13 +40,10 @@ const Article = ({ article, loading, showImage = true }) => {
             ) : (
               <span>{timeSince(article?.pub_date)} ago</span>
             )}
-            {" | "}
             {loading ? (
               <Skeleton width={250} />
             ) : (
-              <>
-                By <span>{article?.author}</span>
-              </>
+              <>{getAuthorName(article?.author, " | By ")}</>
             )}
           </p>
         </div>

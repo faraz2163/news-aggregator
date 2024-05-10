@@ -43,7 +43,7 @@ const Slider = ({ articles, loading, title = "Editor's Pick" }) => {
                   {loading ? (
                     <Skeleton height={22} width={120} />
                   ) : (
-                    getAuthorName(currentSelected?.author, " | ")
+                    getAuthorName(currentSelected?.author, " | By ")
                   )}
                 </p>
               </div>

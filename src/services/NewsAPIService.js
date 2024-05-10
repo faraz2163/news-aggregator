@@ -43,7 +43,6 @@ class NewsAPIService {
 class NewsAPIHelpers {
   getNewsFeedUrlWithQueryString(sources) {
     const params = new URLSearchParams();
-    console.log("NewsFeedCalled");
 
     if (sources.length) {
       params.append("sources", sources.map((s) => s.id).join(","));

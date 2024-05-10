@@ -12,7 +12,6 @@ export const fetchEditorsPick = createAsyncThunk(
   "news/fetchEditorsPick",
   async (sourcesState) => {
     try {
-      debugger;
       const sources = sourcesState
         .filter((s) => s.id.indexOf("google") === -1)
         .map((s) => s.id)
